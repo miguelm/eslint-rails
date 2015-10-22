@@ -6,15 +6,15 @@ namespace :eslint do
 
   desc %{Run ESLint against the specified JavaScript file and report warnings (default is 'application')}
   task :run, [:filename] => :environment do |_, args|
+    puts 'Running ESLint Rails...'
     warnings = ESLintRails::Runner.new(args[:filename]).run
 
     if warnings.empty?
-      puts 'All good! :)'.green
-      exit 0
+      puts 'ESLint inspected, no offenses detected'
     else
       formatter = ESLintRails::TextFormatter.new(warnings)
       formatter.format
-      exit 1
+      abort('ESLint Rails failed!')
     end
   end
 
